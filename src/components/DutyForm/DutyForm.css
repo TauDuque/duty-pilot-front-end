@@ -1,0 +1,15 @@
+.duty-form {
+  margin-bottom: 24px;
+}
+
+.duty-form-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.duty-form-error {
+  color: #ff4d4f;
+  font-size: 12px;
+  margin-top: -8px;
+}
