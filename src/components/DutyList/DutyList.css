@@ -1,0 +1,36 @@
+.duty-list {
+  width: 100%;
+}
+
+.duty-list-header {
+  margin-bottom: 16px;
+  padding: 12px;
+  background: #f5f5f5;
+  border-radius: 8px;
+}
+
+.duty-list-header h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #1890ff;
+}
+
+.duty-list-items {
+  display: flex;
+  flex-direction: column;
+}
+
+.duty-list-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 0;
+}
+
+.duty-list-error {
+  margin-bottom: 24px;
+}
+
+.duty-list-empty {
+  padding: 60px 0;
+}
