@@ -1,0 +1,64 @@
+.app-layout {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.app-header {
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 0 24px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+}
+
+.app-header-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.app-icon {
+  font-size: 36px;
+  color: #1890ff;
+}
+
+.app-title {
+  margin: 0 !important;
+  color: #1890ff;
+  font-weight: 700;
+}
+
+.app-content {
+  padding: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.app-container {
+  width: 100%;
+  max-width: 800px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+  .app-container {
+    padding: 16px;
+  }
+
+  .app-header {
+    padding: 0 16px;
+    height: 64px;
+  }
+
+  .app-icon {
+    font-size: 28px;
+  }
+
+  .app-title {
+    font-size: 20px !important;
+  }
+}
