@@ -21,7 +21,9 @@ export const DutyList: React.FC<DutyListProps> = ({
   if (loading && duties.length === 0) {
     return (
       <div className="duty-list-loading">
-        <Spin size="large" tip="Loading duties..." />
+        <Spin size="large" tip="Loading duties...">
+          <div style={{ padding: 50 }} />
+        </Spin>
       </div>
     );
   }

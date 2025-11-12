@@ -15,6 +15,7 @@ export const DutyItem: React.FC<DutyItemProps> = ({ duty, onUpdate, onDelete }) 
   const [isEditing, setIsEditing] = useState(false);
   const [editValue, setEditValue] = useState(duty.name);
   const [validationError, setValidationError] = useState<string | null>(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const handleEdit = (): void => {
     setIsEditing(true);
@@ -45,22 +46,23 @@ export const DutyItem: React.FC<DutyItemProps> = ({ duty, onUpdate, onDelete }) 
     }
   };
 
-  const handleDelete = (): void => {
-    Modal.confirm({
-      title: 'Delete Duty',
-      content: 'Are you sure you want to delete this duty?',
-      okText: 'Delete',
-      okType: 'danger',
-      cancelText: 'Cancel',
-      onOk: async () => {
-        try {
-          await onDelete(duty.id);
-          message.success('Duty deleted successfully');
-        } catch (err) {
-          message.error(err instanceof Error ? err.message : 'Failed to delete duty');
-        }
-      },
-    });
+  const handleDeleteClick = (): void => {
+    console.log('🗑️ Delete clicked for duty:', duty.id, duty.name);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleDeleteConfirm = async (): Promise<void> => {
+    try {
+      await onDelete(duty.id);
+      setIsDeleteModalOpen(false);
+      message.success('Duty deleted successfully');
+    } catch (err) {
+      message.error(err instanceof Error ? err.message : 'Failed to delete duty');
+    }
+  };
+
+  const handleDeleteCancel = (): void => {
+    setIsDeleteModalOpen(false);
   };
 
   return (
@@ -99,7 +101,7 @@ export const DutyItem: React.FC<DutyItemProps> = ({ duty, onUpdate, onDelete }) 
               type="text"
               danger
               icon={<DeleteOutlined />}
-              onClick={handleDelete}
+              onClick={handleDeleteClick}
               size="small"
             >
               Delete
@@ -107,6 +109,20 @@ export const DutyItem: React.FC<DutyItemProps> = ({ duty, onUpdate, onDelete }) 
           </Space>
         </div>
       )}
+      <Modal
+        title="Delete Duty"
+        open={isDeleteModalOpen}
+        onOk={handleDeleteConfirm}
+        onCancel={handleDeleteCancel}
+        okText="Delete"
+        cancelText="Cancel"
+        okButtonProps={{ danger: true }}
+      >
+        <p>Are you sure you want to delete this duty?</p>
+        <p>
+          <strong>{duty.name}</strong>
+        </p>
+      </Modal>
     </Card>
   );
 };
