@@ -5,8 +5,20 @@ import type { Duty } from '../../types';
 
 describe('DutyList', () => {
   const mockDuties: Duty[] = [
-    { id: '1', name: 'Test Duty 1', created_at: '2024-01-01', updated_at: '2024-01-01' },
-    { id: '2', name: 'Test Duty 2', created_at: '2024-01-02', updated_at: '2024-01-02' },
+    {
+      id: '1',
+      name: 'Test Duty 1',
+      list_id: 'list-1',
+      created_at: '2024-01-01',
+      updated_at: '2024-01-01',
+    },
+    {
+      id: '2',
+      name: 'Test Duty 2',
+      list_id: 'list-1',
+      created_at: '2024-01-02',
+      updated_at: '2024-01-02',
+    },
   ];
 
   const mockOnUpdate = jest.fn();

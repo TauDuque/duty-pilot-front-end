@@ -18,11 +18,18 @@ export default {
   coverageReporters: ['text', 'lcov', 'html'],
   verbose: true,
   transform: {
-    '^.+\\.tsx?$': ['ts-jest', {
-      tsconfig: {
-        jsx: 'react-jsx',
+    '^.+\\.tsx?$': [
+      'ts-jest',
+      {
+        tsconfig: {
+          jsx: 'react-jsx',
+          module: 'commonjs',
+          target: 'es2020',
+          esModuleInterop: true,
+          allowSyntheticDefaultImports: true,
+          types: ['jest', '@testing-library/jest-dom', 'node'],
+        },
       },
-    }],
+    ],
   },
 };
-
