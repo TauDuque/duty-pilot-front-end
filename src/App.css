@@ -3,6 +3,23 @@
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
+.app-empty-state {
+  text-align: center;
+  padding: 48px;
+  color: #666;
+}
+
+.app-empty-state p {
+  font-size: 16px;
+  margin-bottom: 24px;
+}
+
+.app-subtitle {
+  margin: 0 0 0 16px !important;
+  color: #666 !important;
+  font-weight: 400 !important;
+}
+
 .app-header {
   background: #fff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);

@@ -1,12 +1,14 @@
 export interface Duty {
   id: string;
   name: string;
+  list_id: string | null;
   created_at?: string;
   updated_at?: string;
 }
 
 export interface CreateDutyInput {
   name: string;
+  list_id?: string;
 }
 
 export interface UpdateDutyInput {

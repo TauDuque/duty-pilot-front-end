@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import type { Duty, CreateDutyInput, UpdateDutyInput } from '../types';
 import { dutyService } from '../services';
 
-export const useDuties = () => {
+export const useDuties = (listId?: string) => {
   const [duties, setDuties] = useState<Duty[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -11,7 +11,7 @@ export const useDuties = () => {
     setLoading(true);
     setError(null);
     try {
-      const data = await dutyService.getAll();
+      const data = await dutyService.getAll(listId);
       setDuties(data);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to fetch duties';
@@ -19,7 +19,7 @@ export const useDuties = () => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [listId]);
 
   useEffect(() => {
     fetchDuties();
@@ -29,7 +29,8 @@ export const useDuties = () => {
     setLoading(true);
     setError(null);
     try {
-      const newDuty = await dutyService.create(input);
+      const inputWithListId = listId ? { ...input, list_id: listId } : input;
+      const newDuty = await dutyService.create(inputWithListId);
       setDuties((prev) => [newDuty, ...prev]);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to create duty';

@@ -2,8 +2,9 @@ import apiClient from './api';
 import type { Duty, CreateDutyInput, UpdateDutyInput, ApiResponse } from '../types';
 
 export const dutyService = {
-  async getAll(): Promise<Duty[]> {
-    const response = await apiClient.get<ApiResponse<Duty[]>>('/duties');
+  async getAll(listId?: string): Promise<Duty[]> {
+    const params = listId ? { list_id: listId } : undefined;
+    const response = await apiClient.get<ApiResponse<Duty[]>>('/duties', { params });
     return response.data.data;
   },
 
