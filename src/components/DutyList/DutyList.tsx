@@ -1,5 +1,5 @@
 import { Alert, Spin, Empty } from 'antd';
-import type { Duty } from '../../types';
+import type { Duty, DutyStatus } from '../../types';
 import { DutyItem } from '../DutyItem';
 import './DutyList.css';
 
@@ -9,6 +9,7 @@ interface DutyListProps {
   error: string | null;
   onUpdate: (id: string, name: string) => Promise<void>;
   onDelete: (id: string) => Promise<void>;
+  onUpdateStatus: (id: string, status: DutyStatus) => Promise<void>;
 }
 
 export const DutyList: React.FC<DutyListProps> = ({
@@ -17,6 +18,7 @@ export const DutyList: React.FC<DutyListProps> = ({
   error,
   onUpdate,
   onDelete,
+  onUpdateStatus,
 }) => {
   if (loading && duties.length === 0) {
     return (
@@ -56,7 +58,13 @@ export const DutyList: React.FC<DutyListProps> = ({
       </div>
       <div className="duty-list-items">
         {duties.map((duty) => (
-          <DutyItem key={duty.id} duty={duty} onUpdate={onUpdate} onDelete={onDelete} />
+          <DutyItem
+            key={duty.id}
+            duty={duty}
+            onUpdate={onUpdate}
+            onDelete={onDelete}
+            onUpdateStatus={onUpdateStatus}
+          />
         ))}
       </div>
     </div>

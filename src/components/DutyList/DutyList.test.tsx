@@ -8,6 +8,7 @@ describe('DutyList', () => {
     {
       id: '1',
       name: 'Test Duty 1',
+      status: 'pending',
       list_id: 'list-1',
       created_at: '2024-01-01',
       updated_at: '2024-01-01',
@@ -15,6 +16,7 @@ describe('DutyList', () => {
     {
       id: '2',
       name: 'Test Duty 2',
+      status: 'in_progress',
       list_id: 'list-1',
       created_at: '2024-01-02',
       updated_at: '2024-01-02',
@@ -23,6 +25,7 @@ describe('DutyList', () => {
 
   const mockOnUpdate = jest.fn();
   const mockOnDelete = jest.fn();
+  const mockOnUpdateStatus = jest.fn();
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -36,6 +39,7 @@ describe('DutyList', () => {
         error={null}
         onUpdate={mockOnUpdate}
         onDelete={mockOnDelete}
+        onUpdateStatus={mockOnUpdateStatus}
       />
     );
 
@@ -50,6 +54,7 @@ describe('DutyList', () => {
         error="Failed to load duties"
         onUpdate={mockOnUpdate}
         onDelete={mockOnDelete}
+        onUpdateStatus={mockOnUpdateStatus}
       />
     );
 
@@ -64,6 +69,7 @@ describe('DutyList', () => {
         error={null}
         onUpdate={mockOnUpdate}
         onDelete={mockOnDelete}
+        onUpdateStatus={mockOnUpdateStatus}
       />
     );
 
@@ -78,6 +84,7 @@ describe('DutyList', () => {
         error={null}
         onUpdate={mockOnUpdate}
         onDelete={mockOnDelete}
+        onUpdateStatus={mockOnUpdateStatus}
       />
     );
 
