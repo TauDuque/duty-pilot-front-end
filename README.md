@@ -129,6 +129,9 @@ Create `front/.env` with:
 
 <img width="1912" height="944" alt="Captura de tela 2025-11-14 183724" src="https://github.com/user-attachments/assets/153e0689-98e5-49c0-b26c-0d7bf830dc2c" />
 
+<img width="1904" height="621" alt="image" src="https://github.com/user-attachments/assets/c8d8cd3c-c8e9-4c0e-9ebb-f114fcb92140" />
+
+
 
 ---
 
