@@ -123,17 +123,12 @@ Create `front/.env` with:
 
 ## Screenshots
 
-> Place your captures under `docs/screenshots/` (or similar) and reference them here. Suggested shots:
->
-> - Duty Pilot – **Light Theme** (sidebar + empty state)
-> - Duty Pilot – **Dark Theme** (status tags showing different states)
-> - Duty Pilot – **Multiple Lists** (sidebar + list manager modal)
->
-> ```markdown
-> ![Duty Pilot – Light Theme](docs/screenshots/duty-pilot-light.png)
-> ![Duty Pilot – Dark Theme](docs/screenshots/duty-pilot-dark.png)
-> ![Duty Pilot – List Manager](docs/screenshots/duty-pilot-lists.png)
-> ```
+<img width="1912" height="915" alt="Captura de tela 2025-11-14 183551" src="https://github.com/user-attachments/assets/ec2c475a-4557-4c92-85cb-f2f784b77b5f" />
+
+<img width="1908" height="940" alt="Captura de tela 2025-11-14 183712" src="https://github.com/user-attachments/assets/b8cbf888-a03e-4b69-aaeb-83bacd5f09ca" />
+
+<img width="1912" height="944" alt="Captura de tela 2025-11-14 183724" src="https://github.com/user-attachments/assets/153e0689-98e5-49c0-b26c-0d7bf830dc2c" />
+
 
 ---
 
