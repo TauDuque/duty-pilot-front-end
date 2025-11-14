@@ -1,4 +1,4 @@
-import { Layout, Typography, Switch, Tooltip } from 'antd';
+import { Layout, Typography, Switch, Tooltip, message } from 'antd';
 import { CheckCircleOutlined, BulbOutlined, MoonOutlined } from '@ant-design/icons';
 import { DutyForm } from './components/DutyForm';
 import { DutyList } from './components/DutyList';
@@ -7,6 +7,7 @@ import { ListManager } from './components/ListManager';
 import { useDuties } from './hooks';
 import { useActiveList } from './contexts/ActiveListContext';
 import { useTheme } from './contexts/ThemeContext';
+import type { DutyStatus } from './types';
 import './App.css';
 
 const { Header, Content } = Layout;
@@ -14,7 +15,8 @@ const { Title } = Typography;
 
 function App() {
   const { activeList } = useActiveList();
-  const { duties, loading, error, createDuty, updateDuty, deleteDuty } = useDuties(activeList?.id);
+  const { duties, loading, error, createDuty, updateDuty, updateDutyStatus, deleteDuty } =
+    useDuties(activeList?.id);
   const { theme, toggleTheme } = useTheme();
 
   const handleCreate = async (name: string): Promise<void> => {
@@ -27,6 +29,15 @@ function App() {
 
   const handleDelete = async (id: string): Promise<void> => {
     await deleteDuty(id);
+  };
+
+  const handleUpdateStatus = async (id: string, status: DutyStatus): Promise<void> => {
+    try {
+      await updateDutyStatus(id, status);
+      message.success('Status updated successfully!');
+    } catch (err) {
+      message.error(err instanceof Error ? err.message : 'Failed to update duty status');
+    }
   };
 
   return (
@@ -72,6 +83,7 @@ function App() {
                   error={error}
                   onUpdate={handleUpdate}
                   onDelete={handleDelete}
+                  onUpdateStatus={handleUpdateStatus}
                 />
               </>
             ) : (

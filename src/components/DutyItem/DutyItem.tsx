@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { Card, Button, Space, Input, Modal, message } from 'antd';
+import { Card, Button, Space, Input, Modal, message, Tag } from 'antd';
 import { EditOutlined, DeleteOutlined, SaveOutlined, CloseOutlined } from '@ant-design/icons';
-import type { Duty } from '../../types';
+import type { Duty, DutyStatus } from '../../types';
 import { validateDutyName } from '../../utils';
 import './DutyItem.css';
 
@@ -9,13 +9,21 @@ interface DutyItemProps {
   duty: Duty;
   onUpdate: (id: string, name: string) => Promise<void>;
   onDelete: (id: string) => Promise<void>;
+  onUpdateStatus: (id: string, status: DutyStatus) => Promise<void>;
 }
 
-export const DutyItem: React.FC<DutyItemProps> = ({ duty, onUpdate, onDelete }) => {
+const statusConfig: Record<DutyStatus, { color: string; label: string; next: DutyStatus }> = {
+  pending: { color: 'orange', label: 'Pending', next: 'in_progress' },
+  in_progress: { color: 'blue', label: 'In Progress', next: 'done' },
+  done: { color: 'green', label: 'Done', next: 'pending' },
+};
+
+export const DutyItem: React.FC<DutyItemProps> = ({ duty, onUpdate, onDelete, onUpdateStatus }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editValue, setEditValue] = useState(duty.name);
   const [validationError, setValidationError] = useState<string | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isStatusUpdating, setIsStatusUpdating] = useState(false);
 
   const handleEdit = (): void => {
     setIsEditing(true);
@@ -47,7 +55,6 @@ export const DutyItem: React.FC<DutyItemProps> = ({ duty, onUpdate, onDelete }) 
   };
 
   const handleDeleteClick = (): void => {
-    console.log('🗑️ Delete clicked for duty:', duty.id, duty.name);
     setIsDeleteModalOpen(true);
   };
 
@@ -63,6 +70,21 @@ export const DutyItem: React.FC<DutyItemProps> = ({ duty, onUpdate, onDelete }) 
 
   const handleDeleteCancel = (): void => {
     setIsDeleteModalOpen(false);
+  };
+
+  const handleToggleStatus = async (): Promise<void> => {
+    if (isStatusUpdating) {
+      return;
+    }
+
+    setIsStatusUpdating(true);
+    const nextStatus = statusConfig[duty.status].next;
+
+    try {
+      await onUpdateStatus(duty.id, nextStatus);
+    } finally {
+      setIsStatusUpdating(false);
+    }
   };
 
   return (
@@ -92,7 +114,28 @@ export const DutyItem: React.FC<DutyItemProps> = ({ duty, onUpdate, onDelete }) 
         </div>
       ) : (
         <div className="duty-item-view">
-          <span className="duty-item-name">{duty.name}</span>
+          <Space size="middle" className="duty-item-status-wrapper">
+            <Tag
+              color={statusConfig[duty.status].color}
+              onClick={handleToggleStatus}
+              className="duty-item-status-tag"
+              style={{
+                opacity: isStatusUpdating ? 0.6 : 1,
+                pointerEvents: isStatusUpdating ? 'none' : 'auto',
+              }}
+            >
+              {statusConfig[duty.status].label}
+            </Tag>
+            <span
+              className="duty-item-name"
+              style={{
+                textDecoration: duty.status === 'done' ? 'line-through' : 'none',
+                opacity: duty.status === 'done' ? 0.6 : 1,
+              }}
+            >
+              {duty.name}
+            </span>
+          </Space>
           <Space className="duty-item-actions">
             <Button type="text" icon={<EditOutlined />} onClick={handleEdit} size="small">
               Edit

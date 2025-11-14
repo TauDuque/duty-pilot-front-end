@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import type { Duty, CreateDutyInput, UpdateDutyInput } from '../types';
+import type { Duty, CreateDutyInput, UpdateDutyInput, DutyStatus } from '../types';
 import { dutyService } from '../services';
 
 export const useDuties = (listId?: string) => {
@@ -56,6 +56,21 @@ export const useDuties = (listId?: string) => {
     }
   };
 
+  const updateDutyStatus = async (id: string, status: DutyStatus): Promise<void> => {
+    setError(null);
+    const previousDuties = duties;
+    setDuties((prev) => prev.map((duty) => (duty.id === id ? { ...duty, status } : duty)));
+
+    try {
+      await dutyService.update(id, { status });
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to update duty status';
+      setDuties(previousDuties);
+      setError(errorMessage);
+      throw err;
+    }
+  };
+
   const deleteDuty = async (id: string): Promise<void> => {
     setLoading(true);
     setError(null);
@@ -78,6 +93,7 @@ export const useDuties = (listId?: string) => {
     fetchDuties,
     createDuty,
     updateDuty,
+    updateDutyStatus,
     deleteDuty,
   };
 };
