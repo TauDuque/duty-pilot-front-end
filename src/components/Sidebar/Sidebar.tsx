@@ -1,16 +1,30 @@
 import { Layout, Menu, Button, Modal, message, Spin } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { useState } from 'react';
-import type { List } from '../../types';
-import { useLists } from '../../hooks';
+import type { List, CreateListInput, UpdateListInput } from '../../types';
 import { useActiveList } from '../../contexts/ActiveListContext';
 import { ListManager } from '../ListManager';
 import './Sidebar.css';
 
 const { Sider } = Layout;
 
-export const Sidebar = () => {
-  const { lists, loading, deleteList, fetchLists } = useLists();
+interface SidebarProps {
+  lists: List[];
+  loading: boolean;
+  fetchLists: () => Promise<void>;
+  deleteList: (id: string) => Promise<void>;
+  createList: (input: CreateListInput) => Promise<List>;
+  updateList: (id: string, input: UpdateListInput) => Promise<void>;
+}
+
+export const Sidebar = ({
+  lists,
+  loading,
+  fetchLists,
+  deleteList,
+  createList,
+  updateList,
+}: SidebarProps) => {
   const { activeList, setActiveList } = useActiveList();
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [listToDelete, setListToDelete] = useState<List | null>(null);
@@ -74,7 +88,7 @@ export const Sidebar = () => {
       <Sider width={250} className="sidebar" theme="light">
         <div className="sidebar-header">
           <h2>My Lists</h2>
-          <ListManager onListCreated={fetchLists} />
+          <ListManager onListCreated={fetchLists} createList={createList} updateList={updateList} />
         </div>
         {loading ? (
           <div style={{ padding: '16px', textAlign: 'center' }}>

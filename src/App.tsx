@@ -4,7 +4,7 @@ import { DutyForm } from './components/DutyForm';
 import { DutyList } from './components/DutyList';
 import { Sidebar } from './components/Sidebar';
 import { ListManager } from './components/ListManager';
-import { useDuties } from './hooks';
+import { useDuties, useLists } from './hooks';
 import { useActiveList } from './contexts/ActiveListContext';
 import { useTheme } from './contexts/ThemeContext';
 import type { DutyStatus } from './types';
@@ -17,6 +17,14 @@ function App() {
   const { activeList } = useActiveList();
   const { duties, loading, error, createDuty, updateDuty, updateDutyStatus, deleteDuty } =
     useDuties(activeList?.id);
+  const {
+    lists,
+    loading: listsLoading,
+    fetchLists,
+    createList,
+    updateList,
+    deleteList,
+  } = useLists();
   const { theme, toggleTheme } = useTheme();
 
   const handleCreate = async (name: string): Promise<void> => {
@@ -42,7 +50,14 @@ function App() {
 
   return (
     <Layout className="app-layout">
-      <Sidebar />
+      <Sidebar
+        lists={lists}
+        loading={listsLoading}
+        fetchLists={fetchLists}
+        deleteList={deleteList}
+        createList={createList}
+        updateList={updateList}
+      />
       <Layout>
         <Header className="app-header">
           <div className="app-header-content">
@@ -89,7 +104,11 @@ function App() {
             ) : (
               <div className="app-empty-state">
                 <p>Select a list from the sidebar to get started</p>
-                <ListManager />
+                <ListManager
+                  createList={createList}
+                  updateList={updateList}
+                  onListCreated={fetchLists}
+                />
               </div>
             )}
           </div>

@@ -1,14 +1,12 @@
 import '@testing-library/jest-dom';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import type { ComponentProps } from 'react';
 import { ListManager } from './ListManager';
-import { useLists } from '../../hooks';
 import { useActiveList } from '../../contexts/ActiveListContext';
 import type { List } from '../../types';
 
-jest.mock('../../hooks/useLists');
 jest.mock('../../contexts/ActiveListContext');
 
-const mockUseLists = useLists as jest.MockedFunction<typeof useLists>;
 const mockUseActiveList = useActiveList as jest.MockedFunction<typeof useActiveList>;
 
 describe('ListManager', () => {
@@ -16,6 +14,15 @@ describe('ListManager', () => {
   const mockUpdateList = jest.fn();
   const mockSetActiveList = jest.fn();
   const mockOnListCreated = jest.fn();
+  const renderComponent = (overrideProps: Partial<ComponentProps<typeof ListManager>> = {}) =>
+    render(
+      <ListManager
+        createList={mockCreateList}
+        updateList={mockUpdateList}
+        onListCreated={mockOnListCreated}
+        {...overrideProps}
+      />
+    );
 
   const mockNewList: List = {
     id: '1',
@@ -26,15 +33,10 @@ describe('ListManager', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    mockUseLists.mockReturnValue({
-      lists: [],
-      loading: false,
-      error: null,
-      fetchLists: jest.fn(),
-      createList: mockCreateList,
-      updateList: mockUpdateList,
-      deleteList: jest.fn(),
-    });
+    mockCreateList.mockReset();
+    mockUpdateList.mockReset();
+    mockSetActiveList.mockReset();
+    mockOnListCreated.mockReset();
     mockUseActiveList.mockReturnValue({
       activeList: null,
       setActiveList: mockSetActiveList,
@@ -43,13 +45,13 @@ describe('ListManager', () => {
   });
 
   it('should render new list button', () => {
-    render(<ListManager onListCreated={mockOnListCreated} />);
+    renderComponent();
 
     expect(screen.getByText('New List')).toBeInTheDocument();
   });
 
   it('should open modal when button is clicked', async () => {
-    render(<ListManager onListCreated={mockOnListCreated} />);
+    renderComponent();
 
     const button = screen.getByText('New List');
     fireEvent.click(button);
@@ -62,7 +64,7 @@ describe('ListManager', () => {
   it('should create a new list', async () => {
     mockCreateList.mockResolvedValue(mockNewList);
 
-    render(<ListManager onListCreated={mockOnListCreated} />);
+    renderComponent();
 
     const button = screen.getByText('New List');
     fireEvent.click(button);
@@ -86,7 +88,7 @@ describe('ListManager', () => {
   });
 
   it('should show validation error for empty name', async () => {
-    render(<ListManager onListCreated={mockOnListCreated} />);
+    renderComponent();
 
     const button = screen.getByText('New List');
     fireEvent.click(button);
@@ -115,7 +117,7 @@ describe('ListManager', () => {
 
     mockUpdateList.mockResolvedValue(undefined);
 
-    render(<ListManager listToEdit={listToEdit} onListCreated={mockOnListCreated} />);
+    renderComponent({ listToEdit });
 
     await waitFor(() => {
       expect(screen.getByText('Edit List')).toBeInTheDocument();
@@ -137,7 +139,7 @@ describe('ListManager', () => {
   });
 
   it('should close modal when cancel is clicked', async () => {
-    render(<ListManager onListCreated={mockOnListCreated} />);
+    renderComponent();
 
     const button = screen.getByText('New List');
     fireEvent.click(button);

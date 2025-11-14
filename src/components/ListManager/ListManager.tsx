@@ -2,7 +2,6 @@ import { Modal, Form, Input, Button, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import type { List, CreateListInput, UpdateListInput } from '../../types';
-import { useLists } from '../../hooks';
 import { useActiveList } from '../../contexts/ActiveListContext';
 import { validateDutyName } from '../../utils/validation';
 import './ListManager.css';
@@ -11,10 +10,17 @@ interface ListManagerProps {
   listToEdit?: List | null;
   onClose?: () => void;
   onListCreated?: () => void;
+  createList: (input: CreateListInput) => Promise<List>;
+  updateList: (id: string, input: UpdateListInput) => Promise<void>;
 }
 
-export const ListManager = ({ listToEdit, onClose, onListCreated }: ListManagerProps) => {
-  const { createList, updateList } = useLists();
+export const ListManager = ({
+  listToEdit,
+  onClose,
+  onListCreated,
+  createList,
+  updateList,
+}: ListManagerProps) => {
   const { setActiveList } = useActiveList();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();

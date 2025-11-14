@@ -1,14 +1,12 @@
 import '@testing-library/jest-dom';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import type { ComponentProps } from 'react';
 import { Sidebar } from './Sidebar';
-import { useLists } from '../../hooks';
 import { useActiveList } from '../../contexts/ActiveListContext';
 import type { List } from '../../types';
 
-jest.mock('../../hooks/useLists');
 jest.mock('../../contexts/ActiveListContext');
 
-const mockUseLists = useLists as jest.MockedFunction<typeof useLists>;
 const mockUseActiveList = useActiveList as jest.MockedFunction<typeof useActiveList>;
 
 describe('Sidebar', () => {
@@ -29,19 +27,29 @@ describe('Sidebar', () => {
 
   const mockDeleteList = jest.fn();
   const mockFetchLists = jest.fn();
+  const mockCreateList = jest.fn();
+  const mockUpdateList = jest.fn();
   const mockSetActiveList = jest.fn();
+  const renderSidebar = (overrideProps: Partial<ComponentProps<typeof Sidebar>> = {}) =>
+    render(
+      <Sidebar
+        lists={mockLists}
+        loading={false}
+        fetchLists={mockFetchLists}
+        deleteList={mockDeleteList}
+        createList={mockCreateList}
+        updateList={mockUpdateList}
+        {...overrideProps}
+      />
+    );
 
   beforeEach(() => {
     jest.clearAllMocks();
-    mockUseLists.mockReturnValue({
-      lists: mockLists,
-      loading: false,
-      error: null,
-      fetchLists: mockFetchLists,
-      createList: jest.fn(),
-      updateList: jest.fn(),
-      deleteList: mockDeleteList,
-    });
+    mockDeleteList.mockReset();
+    mockFetchLists.mockReset();
+    mockCreateList.mockReset();
+    mockUpdateList.mockReset();
+    mockSetActiveList.mockReset();
     mockUseActiveList.mockReturnValue({
       activeList: null,
       setActiveList: mockSetActiveList,
@@ -50,7 +58,7 @@ describe('Sidebar', () => {
   });
 
   it('should render sidebar with lists', () => {
-    render(<Sidebar />);
+    renderSidebar();
 
     expect(screen.getByText('My Lists')).toBeInTheDocument();
     expect(screen.getByText('Test List 1')).toBeInTheDocument();
@@ -58,17 +66,7 @@ describe('Sidebar', () => {
   });
 
   it('should show loading state', () => {
-    mockUseLists.mockReturnValue({
-      lists: [],
-      loading: true,
-      error: null,
-      fetchLists: mockFetchLists,
-      createList: jest.fn(),
-      updateList: jest.fn(),
-      deleteList: mockDeleteList,
-    });
-
-    render(<Sidebar />);
+    renderSidebar({ lists: [], loading: true });
 
     // Check for Spin component (loading indicator)
     const spinElement = document.querySelector('.ant-spin');
@@ -76,7 +74,7 @@ describe('Sidebar', () => {
   });
 
   it('should call setActiveList when list is clicked', () => {
-    render(<Sidebar />);
+    renderSidebar();
 
     const listItem = screen.getByText('Test List 1');
     fireEvent.click(listItem);
@@ -85,7 +83,7 @@ describe('Sidebar', () => {
   });
 
   it('should show delete modal when delete button is clicked', async () => {
-    render(<Sidebar />);
+    renderSidebar();
 
     // Find delete button by icon class
     const deleteIcon = document.querySelector('.anticon-delete');
@@ -106,7 +104,7 @@ describe('Sidebar', () => {
     mockDeleteList.mockResolvedValue(undefined);
     mockFetchLists.mockResolvedValue(undefined);
 
-    render(<Sidebar />);
+    renderSidebar();
 
     // Find delete button by icon class
     const deleteIcon = document.querySelector('.anticon-delete');
@@ -136,7 +134,7 @@ describe('Sidebar', () => {
       clearActiveList: jest.fn(),
     });
 
-    render(<Sidebar />);
+    renderSidebar();
 
     // The active list should be selected in the menu
     const menu = screen.getByRole('menu');
