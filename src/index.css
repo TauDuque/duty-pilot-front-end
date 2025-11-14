@@ -1,3 +1,42 @@
+:root {
+  --color-gradient-start: #667eea;
+  --color-gradient-end: #764ba2;
+  --color-page-bg: #f4f6fb;
+  --color-header-bg: #ffffff;
+  --color-card-bg: #ffffff;
+  --color-border: #e5e7eb;
+  --color-text: #1f2933;
+  --color-muted: #6b7280;
+  --color-accent: #1890ff;
+  --color-surface-alt: #f5f5f5;
+  --color-shadow: 0 4px 24px rgba(15, 23, 42, 0.1);
+  --sidebar-bg: #ffffff;
+  --sidebar-border: #f0f0f0;
+  --sidebar-hover: rgba(24, 144, 255, 0.08);
+}
+
+body.theme-dark {
+  color-scheme: dark;
+  --color-gradient-start: #1d1f33;
+  --color-gradient-end: #2a1b3d;
+  --color-page-bg: #1e1f2b;
+  --color-header-bg: #232433;
+  --color-card-bg: #2b2c3d;
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-text: #f8f8f2;
+  --color-muted: #a0a3c4;
+  --color-accent: #bd93f9;
+  --color-surface-alt: #36374a;
+  --color-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+  --sidebar-bg: #1f1f2f;
+  --sidebar-border: rgba(255, 255, 255, 0.08);
+  --sidebar-hover: rgba(189, 147, 249, 0.18);
+}
+
+body.theme-light {
+  color-scheme: light;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -10,6 +49,11 @@ body {
     'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: var(--color-page-bg);
+  color: var(--color-text);
+  transition:
+    background 0.3s ease,
+    color 0.3s ease;
 }
 
 code {
