@@ -1,10 +1,13 @@
 .duty-item {
   margin-bottom: 12px;
-  transition: all 0.3s ease;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  border-radius: 12px;
+  border: 1px solid transparent;
 }
 
 .duty-item:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--color-shadow);
+  border-color: var(--color-border);
 }
 
 .duty-item-view,
@@ -24,6 +27,7 @@
   flex: 1;
   font-size: 14px;
   word-break: break-word;
+  color: var(--color-text);
 }
 
 .duty-item-actions {
@@ -37,4 +41,5 @@
   font-size: 12px;
   margin-top: 4px;
 }
+
 

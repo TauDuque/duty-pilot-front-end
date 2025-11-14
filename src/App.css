@@ -1,12 +1,13 @@
 .app-layout {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--color-gradient-start), var(--color-gradient-end));
+  transition: background 0.3s ease;
 }
 
 .app-empty-state {
   text-align: center;
   padding: 48px;
-  color: #666;
+  color: var(--color-muted);
 }
 
 .app-empty-state p {
@@ -16,13 +17,13 @@
 
 .app-subtitle {
   margin: 0 0 0 16px !important;
-  color: #666 !important;
+  color: var(--color-muted) !important;
   font-weight: 400 !important;
 }
 
 .app-header {
-  background: #fff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: var(--color-header-bg);
+  box-shadow: var(--color-shadow);
   padding: 0 24px;
   height: 80px;
   display: flex;
@@ -32,17 +33,36 @@
 .app-header-content {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  width: 100%;
   gap: 16px;
+}
+
+.app-header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.app-theme-switcher {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.app-theme-label {
+  font-size: 14px;
+  color: var(--color-muted);
 }
 
 .app-icon {
   font-size: 36px;
-  color: #1890ff;
+  color: var(--color-accent);
 }
 
 .app-title {
   margin: 0 !important;
-  color: #1890ff;
+  color: var(--color-accent) !important;
   font-weight: 700;
 }
 
@@ -55,10 +75,12 @@
 .app-container {
   width: 100%;
   max-width: 800px;
-  background: #fff;
-  border-radius: 12px;
+  background: var(--color-card-bg);
+  border-radius: 16px;
   padding: 24px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--color-shadow);
+  border: 1px solid var(--color-border);
+  transition: background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 @media (max-width: 768px) {
@@ -79,3 +101,4 @@
     font-size: 20px !important;
   }
 }
+

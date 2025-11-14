@@ -1,11 +1,12 @@
-import { Layout, Typography } from 'antd';
-import { CheckCircleOutlined } from '@ant-design/icons';
+import { Layout, Typography, Switch, Tooltip } from 'antd';
+import { CheckCircleOutlined, BulbOutlined, MoonOutlined } from '@ant-design/icons';
 import { DutyForm } from './components/DutyForm';
 import { DutyList } from './components/DutyList';
 import { Sidebar } from './components/Sidebar';
 import { ListManager } from './components/ListManager';
 import { useDuties } from './hooks';
 import { useActiveList } from './contexts/ActiveListContext';
+import { useTheme } from './contexts/ThemeContext';
 import './App.css';
 
 const { Header, Content } = Layout;
@@ -14,6 +15,7 @@ const { Title } = Typography;
 function App() {
   const { activeList } = useActiveList();
   const { duties, loading, error, createDuty, updateDuty, deleteDuty } = useDuties(activeList?.id);
+  const { theme, toggleTheme } = useTheme();
 
   const handleCreate = async (name: string): Promise<void> => {
     await createDuty({ name });
@@ -33,15 +35,30 @@ function App() {
       <Layout>
         <Header className="app-header">
           <div className="app-header-content">
-            <CheckCircleOutlined className="app-icon" />
-            <Title level={2} className="app-title">
-              Duty Pilot
-            </Title>
-            {activeList && (
-              <Title level={4} className="app-subtitle">
-                {activeList.name}
+            <div className="app-header-left">
+              <CheckCircleOutlined className="app-icon" />
+              <Title level={2} className="app-title">
+                Duty Pilot
               </Title>
-            )}
+              {activeList && (
+                <Title level={4} className="app-subtitle">
+                  {activeList.name}
+                </Title>
+              )}
+            </div>
+            <div className="app-theme-switcher">
+              <span className="app-theme-label">
+                {theme === 'dark' ? 'Dark mode' : 'Light mode'}
+              </span>
+              <Tooltip title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}>
+                <Switch
+                  checked={theme === 'dark'}
+                  onChange={toggleTheme}
+                  checkedChildren={<MoonOutlined />}
+                  unCheckedChildren={<BulbOutlined />}
+                />
+              </Tooltip>
+            </div>
           </div>
         </Header>
         <Content className="app-content">

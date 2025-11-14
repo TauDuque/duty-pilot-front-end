@@ -1,16 +1,16 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { App as AntApp } from 'antd';
 import { ActiveListProvider } from './contexts/ActiveListContext';
+import { ThemeProvider } from './contexts/ThemeContext';
 import './index.css';
 import App from './App.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <AntApp>
+    <ThemeProvider>
       <ActiveListProvider>
         <App />
       </ActiveListProvider>
-    </AntApp>
+    </ThemeProvider>
   </StrictMode>
 );
